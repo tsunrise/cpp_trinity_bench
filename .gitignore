@@ -81,7 +81,6 @@ test-driver
 .DS_Store
 /Debug/
 target
-.vscode/
 
 *.osm.pbf
 *.osm.csv

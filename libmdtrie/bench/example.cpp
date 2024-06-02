@@ -18,12 +18,12 @@ int random_int(int min, int max)
     return distrib(gen);
 }
 
-#define DIM 10
+#define DIM 9
 
 int main()
 {
     dimension_t num_dimensions = DIM;
-    int total_count = 100000;
+    int total_count = 50000;
     trie_depth = 6;
     max_depth = 32;
     no_dynamic_sizing = true;
