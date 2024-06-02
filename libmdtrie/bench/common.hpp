@@ -10,11 +10,8 @@
 #include <unistd.h>
 #include <vector>
 
-#define GITHUB_MICRO_SIZE 1000000 // 200M
-
 #define GITHUB_DIMENSION 10
 
-#define QUERY_NUM 1000
 #define SERVER_TO_SERVER_IN_NS 92
 
 // #define TEST_STORAGE
@@ -33,7 +30,6 @@ std::string GITHUB_QUERY_ADDR = ROOT_DIR + "queries/github_query";
 
 unsigned int skip_size_count = 0;
 /* Because it results in otherwise OOM for other benchmarks. */
-int micro_github_size = 1000000;
 bool is_microbenchmark = false;
 
 enum
@@ -47,8 +43,9 @@ enum
 level_t max_depth = 32;
 level_t trie_depth = 6;
 preorder_t max_tree_node = 512;
-point_t points_to_insert = 1000;
-point_t points_to_lookup = 1000;
+point_t POINTS_TO_INSERT = 1000;
+point_t POINTS_TO_LOOKUP = 1000;
+point_t POINTS_TO_RANGE_QUERY = 1000;
 std::string results_folder_addr = "/proj/Trinity/results/";
 std::string identification_string = "";
 int optimization_code = OPTIMIZATION_SM;
