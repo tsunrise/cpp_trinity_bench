@@ -9,7 +9,7 @@ bash scripts/setup_one_node.sh
 
 ## Run Benchmark
 - Put **this** repo in `/proj/Trinity`
-- Put `trinioxide` repo in `/proj/trinioxide`
+- Put [`trinitoxide`](https://github.com/tsunrise/trinitoxide) repo in `/proj/trinitoxide`
 - In this repo, setup:
   ```bash
   cd /proj/Trinity
@@ -27,7 +27,7 @@ bash scripts/setup_one_node.sh
 
 - In trinioxide repo, download dataset:
   ```bash
-  cd /proj/trinioxide
+  cd /proj/trinitoxide
   python3 scripts/download_github_dataset.py -n 1000000 -o data/github.csv
   ```
 
@@ -36,7 +36,7 @@ bash scripts/setup_one_node.sh
   cd /proj/Trinity
   mkdir -p datasets
   cd datasets
-  ln -s /proj/trinioxide/data/github.csv github.csv
+  ln -s /proj/trinitoxide/data/github.csv github.csv
   ```
 
 - Run benchmark:
