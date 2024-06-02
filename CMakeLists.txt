@@ -32,18 +32,6 @@ set(CMAKE_BUILD_TYPE RelWithDebInfo)
 include(BuildOptions)
 include(Dependencies)
 
-if (GENERATE_THRIFT)
-  add_subdirectory(thrift)
-endif ()
-
-if (BUILD_TESTS)
-  include(CTest)
-  enable_testing(true)
-endif ()
-
 add_subdirectory(libmdtrie)
 
-if (build_rpc)
-  add_subdirectory(librpc)
-endif()
 

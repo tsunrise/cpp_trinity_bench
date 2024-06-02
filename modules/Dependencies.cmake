@@ -17,7 +17,7 @@ find_package(Threads REQUIRED)
 # set(HEAP_MANAGER_LIBRARY ${JEMALLOC_LIBRARY})
 
 # Apache Thrift
-include(ThriftExternal)
+# include(ThriftExternal)
 
 # If testing is enabled
 if (BUILD_TESTS)
