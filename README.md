@@ -2,9 +2,17 @@
 
 ## Setup
 
+- Create `/proj` and set permission:
+```bash
+sudo mkdir /proj
+sudo chown -R <your_user_name>:<your_user_name> /proj
+sudo chmod -R 755 /proj
+```
+
 - Put **this** repo in `/proj/Trinity`
 - Run
   ```bash
+  cd /proj/Trinity
   bash scripts/setup_one_node.sh
   ```
 
