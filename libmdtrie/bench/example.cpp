@@ -18,14 +18,16 @@ int random_int(int min, int max)
     return distrib(gen);
 }
 
+#define DIM 10
+
 int main()
 {
-    dimension_t num_dimensions = 9;
-    int total_count = 1000;
+    dimension_t num_dimensions = DIM;
+    int total_count = 100000;
     trie_depth = 6;
     max_depth = 32;
     no_dynamic_sizing = true;
-    md_trie<9> mdtrie(max_depth, trie_depth, max_tree_node);
+    md_trie<DIM> mdtrie(max_depth, trie_depth, max_tree_node);
     bitmap::CompactPtrVector primary_key_to_treeblock_mapping(total_count);
 
     /* ---------- Initialization ------------ */
@@ -40,7 +42,7 @@ int main()
 
     for (int primary_key = 0; primary_key < total_count; primary_key++)
     {
-        data_point<9> point;
+        data_point<DIM> point;
         // For lookup correctness checking.
         point.set_coordinate(0, primary_key);
         for (dimension_t i = 1; i < num_dimensions; ++i)
@@ -58,7 +60,7 @@ int main()
     for (int primary_key = 0; primary_key < total_count; primary_key++)
     {
         start = GetTimestamp();
-        data_point<9> *pt = mdtrie.lookup_trie(primary_key, &primary_key_to_treeblock_mapping);
+        data_point<DIM> *pt = mdtrie.lookup_trie(primary_key, &primary_key_to_treeblock_mapping);
         if ((int)pt->get_coordinate(0) != primary_key)
         {
             std::cerr << "Wrong point retrieved!" << std::endl;
@@ -72,10 +74,10 @@ int main()
     int num_queries = 10;
     for (int c = 0; c < num_queries; c++)
     {
-        data_point<9> start_range;
-        data_point<9> end_range;
+        data_point<DIM> start_range;
+        data_point<DIM> end_range;
         std::vector<int> found_points;
-        for (dimension_t i = 0; i < 9; i++)
+        for (dimension_t i = 0; i < DIM; i++)
         {
             start_range.set_coordinate(i, 0);
             end_range.set_coordinate(i, (int)1 << 16);
