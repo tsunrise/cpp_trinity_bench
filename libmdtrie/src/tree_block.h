@@ -1,12 +1,17 @@
 #ifndef MD_TRIE_TREE_BLOCK_H
 #define MD_TRIE_TREE_BLOCK_H
 
+#define DEBUG_START 220000
+// #define DEBUG_START 0xffffffff
+
 #include "compact_ptr.h"
 #include "compressed_bitmap.h"
+#include "defs.h"
 #include "point_array.h"
 #include "trie_node.h"
 #include <cmath>
 #include <cstdio>
+#include <iostream>
 #include <sys/time.h>
 
 template <dimension_t DIMENSION>
@@ -53,8 +58,12 @@ public:
     return frontiers_[current_frontier].preorder_;
   }
 
-  inline void set_preorder(preorder_t current_frontier, preorder_t preorder)
+  inline void set_preorder(preorder_t current_frontier, preorder_t preorder, n_leaves_t primary_key)
   {
+    if (primary_key > DEBUG_START)
+    {
+      printf("set_preorder[%ld,%ld,%ld,%ld]\n", primary_key, current_frontier,num_nodes_, node_capacity_);
+    }
     frontiers_[current_frontier].preorder_ = preorder;
   }
 
@@ -558,7 +567,8 @@ public:
     return current_node_ret;
   }
 
-  #define DEBUG_START 1370000
+  // #define DEBUG_START 1370000
+
 
   void insert(preorder_t node,
               preorder_t node_pos,
@@ -778,7 +788,7 @@ public:
       if (frontiers_ != nullptr)
         for (preorder_t j = current_frontier; j < num_frontiers_; j++)
         {
-          set_preorder(j, get_preorder(j) + max_depth_ - level);
+          set_preorder(j, get_preorder(j) + max_depth_ - level, primary_key);
           set_pointer(j, get_pointer(j)); // Prob not necessary
         }
 
@@ -939,6 +949,9 @@ public:
           free(new_pointer_array);
 
         // Expand frontiers array to add one more frontier node
+        if (primary_key > DEBUG_START) {
+          printf("frontier_push1[%ld,%ld,%ld,%ld,%ld]\n",node,node_pos,primary_key, num_nodes_, node_capacity_);
+        }
         frontiers_ = (frontier_node<DIMENSION> *)realloc(
             frontiers_, sizeof(frontier_node<DIMENSION>) * (num_frontiers_ + 1));
 
@@ -946,11 +959,11 @@ public:
         // to nPtrs
         for (preorder_t j = num_frontiers_; j > frontier_selected_node; j--)
         {
-          set_preorder(j, get_preorder(j - 1) - subtree_size + 1);
+          set_preorder(j, get_preorder(j - 1) - subtree_size + 1, primary_key);
           set_pointer(j, get_pointer(j - 1));
         }
         //  Insert that new frontier node
-        set_preorder(frontier_selected_node, orig_selected_node);
+        set_preorder(frontier_selected_node, orig_selected_node, primary_key);
         set_pointer(frontier_selected_node, new_block);
         num_frontiers_++;
       }
@@ -961,25 +974,37 @@ public:
             new_pointer_array,
             sizeof(frontier_node<DIMENSION>) * (new_pointer_index));
 
+        if (primary_key > DEBUG_START) {
+          printf("frontier_update[%ld,%ld,%ld,%ld,%ld]\n",node,node_pos,primary_key, new_block->num_nodes_, new_block->node_capacity_);
+        }
         new_block->frontiers_ = new_pointer_array;
         new_block->num_frontiers_ = new_pointer_index;
         // Update pointer block parent pointer
         for (preorder_t j = 0; j < new_pointer_index; j++)
         {
-          new_block->set_preorder(j, new_block->get_preorder(j));
+          if (primary_key > DEBUG_START) {
+            printf("frontier_update2[%ld,%ld,%ld,%ld,%ld]\n",node,node_pos,primary_key, new_block->num_nodes_, new_block->node_capacity_);
+          }
+          new_block->set_preorder(j, new_block->get_preorder(j), primary_key);
           new_block->set_pointer(j, new_block->get_pointer(j));
         }
-        set_preorder(frontier_selected_node, orig_selected_node);
-        set_pointer(frontier_selected_node, new_block);
 
+        set_preorder(frontier_selected_node, orig_selected_node, primary_key);
+        set_pointer(frontier_selected_node, new_block);
+        if (primary_key > DEBUG_START) {
+            printf("frontier_update3[%ld,%ld,%ld,%ld,%ld,%ld]\n",node,node_pos,primary_key, new_block->num_nodes_, new_block->node_capacity_, orig_selected_node);
+          }
         for (preorder_t j = frontier_selected_node + 1;
              frontier < num_frontiers_;
              j++, frontier++)
         {
-          set_preorder(j, get_preorder(frontier) - subtree_size + 1);
+          set_preorder(j, get_preorder(frontier) - subtree_size + 1, primary_key);
           set_pointer(j, get_pointer(frontier));
         }
         num_frontiers_ = num_frontiers_ - copied_frontier + 1;
+        if (primary_key > DEBUG_START) {
+          printf("frontier_push2[%ld,%ld,%ld,%ld,%ld]\n",node,node_pos,primary_key, num_nodes_, node_capacity_);
+        }
         frontiers_ = (frontier_node<DIMENSION> *)realloc(
             frontiers_, sizeof(frontier_node<DIMENSION>) * (num_frontiers_));
       }
@@ -1124,8 +1149,14 @@ public:
                         n_leaves_t primary_key,
                         bitmap::CompactPtrVector *p_key_to_treeblock_compact)
   {
+    // if (primary_key == 1382667) {
+    //   std::cerr << "trap" << std::endl;
+    // }
+    if (primary_key == 226908) {
+      std::cerr << "trap" << std::endl;
+    }
     if (primary_key > DEBUG_START) {
-      printf("insert_remaining[%d,%ld,%ld,%ld]\n",level,primary_key, num_nodes_, node_capacity_);
+      printf("insert_remaining[%d,%ld,%ld,%ld,%ld]\n",level,primary_key, num_nodes_, node_capacity_, num_frontiers_);
     }
     preorder_t current_node = 0;
     preorder_t current_node_pos = 0;
