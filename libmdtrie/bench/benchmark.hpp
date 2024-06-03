@@ -59,17 +59,17 @@ public:
         break;
 
       if (n_points % (total_points_count / 100) == 0)
-        std::cout << n_points << " out of " << total_points_count << std::endl;
+        std::cerr << n_points << " out of " << total_points_count << std::endl;
     }
 
-    std::cout << "[CPP] Insertion time: " << (float)diff / n_points << "us" << std::endl;
+    // std::cout << "[CPP] Insertion time: " << (float)diff / n_points << "us" << std::endl;
     infile.close();
   }
 
   void lookup(std::string outfile_name)
   {
 
-    std::cout << "Running lookups" << std::endl;
+    // std::cout << "Running lookups" << std::endl;
     TimeStamp cumulative = 0, start = 0;
 
     for (point_t i = 0; i < POINTS_TO_LOOKUP; i++)
@@ -83,11 +83,11 @@ public:
     flush_vector_to_file(lookup_latency_vect_,
                          results_folder_addr +
                              outfile_name);
-    std::cout << "[CPP] Lookup time: "
-              << (float)cumulative / POINTS_TO_LOOKUP
-              << " us, sample size="
-              << POINTS_TO_LOOKUP
-              << std::endl;
+    // std::cout << "[CPP] Lookup time: "
+    //           << (float)cumulative / POINTS_TO_LOOKUP
+    //           << " us, sample size="
+    //           << POINTS_TO_LOOKUP
+    //           << std::endl;
   }
 
   void range_search(std::string query_addr,
@@ -97,7 +97,7 @@ public:
                                       data_point<DIMENSION> *))
   {
 
-    std::cout << "Running range queries" << std::endl;
+    // std::cout << "Running range queries" << std::endl;
     std::ifstream file(query_addr);
     std::ofstream outfile(results_folder_addr +
                           outfile_name);
@@ -122,11 +122,11 @@ public:
       found_points.clear();
     }
 
-    std::cout << "[CPP] Range search time: "
-              << (float)cumulative / POINTS_TO_RANGE_QUERY
-              << " us, sample size="
-              << POINTS_TO_RANGE_QUERY
-              << std::endl;
+    // std::cout << "[CPP] Range search time: "
+    //           << (float)cumulative / POINTS_TO_RANGE_QUERY
+    //           << " us, sample size="
+    //           << POINTS_TO_RANGE_QUERY
+    //           << std::endl;
   }
 
   void get_storage(std::string outfile_name)
@@ -135,7 +135,7 @@ public:
     uint64_t size = mdtrie_->size(p_key_to_treeblock_compact);
     // convert to mb
     double size_mb = (double)size / (1024 * 1024);
-    std::cout << "[CPP] Memory used: " << size_mb << " MB" << std::endl;
+    // std::cout << "[CPP] Memory used: " << size_mb << " MB" << std::endl;
     flush_string_to_file(
         std::to_string(size) + "," + std::to_string(total_points_count),
         results_folder_addr + outfile_name);

@@ -97,3 +97,5 @@ results/*
 plots/*
 datasets/*
 baselines/*
+
+*.txt

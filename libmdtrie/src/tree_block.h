@@ -6,6 +6,7 @@
 #include "point_array.h"
 #include "trie_node.h"
 #include <cmath>
+#include <cstdio>
 #include <sys/time.h>
 
 template <dimension_t DIMENSION>
@@ -557,6 +558,8 @@ public:
     return current_node_ret;
   }
 
+  #define DEBUG_START 1370000
+
   void insert(preorder_t node,
               preorder_t node_pos,
               data_point<DIMENSION> *leaf_point,
@@ -566,7 +569,11 @@ public:
               n_leaves_t primary_key,
               bitmap::CompactPtrVector *p_key_to_treeblock_compact)
   {
-
+    
+    if (primary_key > DEBUG_START) {
+      printf("insert[%ld,%ld,%ld,%ld,%ld]\n",node,node_pos,primary_key, num_nodes_, node_capacity_);
+    }
+    
     morton_t current_num_children = level_to_num_children[level];
 
     if (level == max_depth_)
@@ -1117,7 +1124,9 @@ public:
                         n_leaves_t primary_key,
                         bitmap::CompactPtrVector *p_key_to_treeblock_compact)
   {
-
+    if (primary_key > DEBUG_START) {
+      printf("insert_remaining[%d,%ld,%ld,%ld]\n",level,primary_key, num_nodes_, node_capacity_);
+    }
     preorder_t current_node = 0;
     preorder_t current_node_pos = 0;
     preorder_t current_frontier = 0;

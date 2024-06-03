@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/proj/Trinity/build/libmdtrie/microbench",
-            "args": ["-b","github"],
+            "args": ["-m","1500000","-n","1000","-r","1000"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
