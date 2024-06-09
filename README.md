@@ -1,4 +1,6 @@
+# Benchmark `libmdtrie`
 
+This repo is a fork to [Trinity-data-store/Trinity](https://github.com/Trinity-data-store/Trinity/tree/main). We use this repo to run benchmark on `libmdtrie` and compare it with `trinitoxide`, our Rust reimplementation. This is part of our course project for [Stanford CS340R: Rusty Systems](https://web.stanford.edu/class/cs340r/)
 
 ## Setup
 
